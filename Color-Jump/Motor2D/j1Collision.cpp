@@ -4,6 +4,7 @@
 #include "j1Player.h"
 #include "j1Collision.h"
 #include "p2Log.h"
+#include "j1Globals.h"
 
 
 ModuleCollision::ModuleCollision()
@@ -52,7 +53,7 @@ update_status ModuleCollision::PreUpdate()
 	Collider* c1;
 	Collider* c2;
 
-	for (int i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		// skip empty colliders
 		if (colliders[i] == nullptr)
