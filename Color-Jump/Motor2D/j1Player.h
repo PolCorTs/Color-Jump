@@ -3,13 +3,13 @@
 
 #include "j1Module.h"
 #include "j1Animation.h"
-#include "Globals.h"
+#include "j1Globals.h"
 #include "p2Point.h"
 
 struct SDL_Texture;
 struct Collider;
 
-class ModulePlayer : public j1Module
+class j1Player : public j1Module
 {
 public:
 	j1Player();
