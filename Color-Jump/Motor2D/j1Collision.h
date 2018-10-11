@@ -22,7 +22,7 @@ struct Collider
 	COLLIDER_TYPE type;
 	//Module* callback = nullptr;
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
@@ -42,18 +42,18 @@ struct Collider
 	bool CheckCollision(const SDL_Rect& r) const;
 };
 
-class ModuleCollision : public Module
+class ModuleCollision : public j1Module
 {
 public:
 
 	ModuleCollision();
 	~ModuleCollision();
 
-	update_status PreUpdate() override;
-	update_status Update() override;
+	update_status PreUpdate();
+	update_status Update();
 	bool CleanUp() override;
 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Module* callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void DebugDraw();
 
 private:
