@@ -17,7 +17,7 @@ j1Player::j1Player() : j1Player()
 {
 
 	// idle animation (arcade sprite sheet)
-	idle.PushBack({ 97, 0, 48, 16 });
+	/*idle.PushBack({ 97, 0, 48, 16 });
 	idle.loop = true;
 	idle.speed = 0.1f;
 
@@ -57,12 +57,14 @@ j1Player::j1Player() : j1Player()
 	downwardreturn.loop = false;
 	downwardreturn.speed = 0.06f;
 
-	current_animation = &idle;
+	current_animation = &idle;*/
 
 }
 
-ModulePlayer::~ModulePlayer()
-{}
+j1Player::~j1Player()
+{
+}
+
 
 
 
