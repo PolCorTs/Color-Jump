@@ -69,7 +69,7 @@ j1Player::~j1Player()
 
 
 // Load assets
-bool ModulePlayer::Start()
+bool j1Player::Start()
 {
 	LOG("Loading player textures");
 	bool ret = true;
@@ -104,7 +104,7 @@ bool ModulePlayer::Start()
 	return ret;
 }
 
-bool ModulePlayer::CleanUp()
+bool j1Player::CleanUp()
 {
 	position.x = 100;
 	position.y = 130;
@@ -123,7 +123,7 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 // Update: draw background
-update_status ModulePlayer::Update()
+update_status j1Player::Update()
 {
 	if (nitroanim) {
 		if (counter < 5) {
@@ -296,7 +296,7 @@ update_status ModulePlayer::Update()
 }
 
 
-void ModulePlayer::OnCollision(Collider* collider1, Collider* collider2) {
+void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 
 
 	if (!dead && godmode == false && collider2->type != COLLIDER_POWERUP) {
@@ -312,7 +312,7 @@ void ModulePlayer::OnCollision(Collider* collider1, Collider* collider2) {
 	}
 }
 
-void ModulePlayer::resetPlayer() {
+void j1Player::resetPlayer() {
 	speed = 2;
 	score = 0;
 	enable_movement = false;
@@ -322,29 +322,4 @@ void ModulePlayer::resetPlayer() {
 	powerup[BOMB_SHOOT] = false;
 	App->tentacles->blit_tentacle = false;
 	App->tentacles->RemoveTentacle();
-}
-
-
-bool ModulePlayer::AddTentacles() {
-
-
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x - 20, position.y, (130 * PI) / 180);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (150 * PI) / 180);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (180 * PI) / 180);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (200 * PI) / 180);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (220 * PI) / 180);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (240 * PI) / 180);
-	App->tentacles->AddTentacle(App->tentacles->anchor_top, position.x, position.y, (260 * PI) / 180, false, true);
-
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (130 * PI) / 180, true);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (150 * PI) / 180, true);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (180 * PI) / 180, true);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (200 * PI) / 180, true);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (220 * PI) / 180, true);
-	App->tentacles->AddTentacle(App->tentacles->tentacle, position.x, position.y, (240 * PI) / 180, true);
-	App->tentacles->AddTentacle(App->tentacles->anchor_bottom, position.x, position.y, (260 * PI) / 180, false, true);
-
-	App->tentacles->blit_tentacle = true;
-
-	return true;
 }
