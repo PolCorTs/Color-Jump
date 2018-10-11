@@ -2,7 +2,7 @@
 #define __ModulePlayer_H__
 
 #include "j1Module.h"
-#include "Animation.h"
+#include "j1Animation.h"
 #include "Globals.h"
 #include "p2Point.h"
 
@@ -12,8 +12,8 @@ struct Collider;
 class ModulePlayer : public j1Module
 {
 public:
-	ModulePlayer();
-	~ModulePlayer();
+	j1Player();
+	~j1Player();
 
 	bool Start();
 	update_status Update();
