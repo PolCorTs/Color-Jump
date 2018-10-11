@@ -1,8 +1,8 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
-#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
-void log(const char file[], int line, const char* format, ...);
+//#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+//void log(const char file[], int line, const char* format, ...);
 
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
@@ -18,17 +18,17 @@ enum update_status
 };
 
 
-// Useful typedefs ---------
+ //Useful typedefs ---------
 typedef unsigned int uint;
 
-/* Configuration -----------
-#define SCREEN_SIZE 1
+ //Configuration -----------
+#define SCREEN_SIZE 1 //1
 #define SCREEN_WIDTH 384 //384
 #define SCREEN_HEIGHT 256 //256
-#define WIN_FULLSCREEN 0
-#define WIN_FULLSCREEN_DESKTOP 1
-#define WIN_BORDERLESS 0
-#define WIN_RESIZABLE 1
-#define REN_VSYNC 1
-*/
+#define WIN_FULLSCREEN 0 //0
+#define WIN_FULLSCREEN_DESKTOP 1 //1
+#define WIN_BORDERLESS 0 //0
+#define WIN_RESIZABLE 1 //1
+#define REN_VSYNC 1 //1
+
 #endif // __GLOBALS_H__

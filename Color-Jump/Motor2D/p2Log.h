@@ -8,4 +8,5 @@
 
 void log(const char file[], int line, const char* format, ...);
 
+
 #endif
