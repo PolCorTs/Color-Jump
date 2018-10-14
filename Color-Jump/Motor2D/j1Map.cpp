@@ -4,7 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
-#include <math.h>
+#include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -30,6 +30,7 @@ void j1Map::Draw()
 {
 	if (map_loaded == false)
 		return;
+	p2List_item<MapLayer*>* layer;
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
 	MapLayer* layer = this->data.layers.start->data;
@@ -47,13 +48,34 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+				/*	if (layer->data->name == "middle") {
+
+						if (pos.x <(-(App->render->camera.x) + App->render->camera.w) && pos.x >(-(App->render->camera.x) - 550)) {
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, map_file.child("map").child("layer").next_sibling("layer").child("properties").child("property").attribute("value").as_float());
+						}
+					}
+					else if (layer->data->name == "front") {
+						if (pos.x <(-(App->render->camera.x) + App->render->camera.w) && pos.x >(-(App->render->camera.x) - 1085))
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, map_file.child("map").child("layer").next_sibling("layer").next_sibling("layer").next_sibling("layer").child("properties").child("property").attribute("value").as_float());
+					}
+					else {
+						if (pos.x <(-(App->render->camera.x) + App->render->camera.w) && pos.x >(-(App->render->camera.x) - 170)) {
+
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE);
+						}
+					}
+
+
 				}
 			}
+			tile_num++;
 		}
 	}
 }
 
+}*/
+
+		
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	// TODO 3: Complete this method so we pick the right
