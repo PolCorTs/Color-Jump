@@ -34,7 +34,7 @@
 //	j1Animation upwardreturn;
 //	j1Animation downwardreturn;
 //	j1Animation* current_animation;
-//	iPoint position;
+//	iPoint pos_map_layer;
 //	iPoint camera_offset;
 //	Uint32 start_time;
 //	Uint32 aux_time;

@@ -64,8 +64,8 @@ public:
 	// Check if a certain window event happened
 	bool GetWindowEvent(int code);
 
-	// Get mouse / axis position
-	void GetMousePosition(int &x, int &y);
+	// Get mouse / axis pos_map_layer
+	void GetMousepos_map_layer(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
 private:

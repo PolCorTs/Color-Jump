@@ -22,6 +22,8 @@ struct MapLayer
 	int			height;
 	uint*		data;
 	Properties properties;
+	SDL_Texture* texture = nullptr;
+	fPoint pos_map_layer;
 
 	MapLayer() : data(NULL)
 	{}

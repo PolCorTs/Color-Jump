@@ -47,6 +47,7 @@ public:
 
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
+	float			virtual_camera_pos;
 	SDL_Rect		viewport;
 	SDL_Color		background;
 };

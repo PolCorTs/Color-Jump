@@ -87,12 +87,12 @@ public:
 		num_elements = 0;
 	}
 
-	bool Insert(const VALUE& element, unsigned int position)
+	bool Insert(const VALUE& element, unsigned int pos_map_layer)
 	{
-		if(position > num_elements)
+		if(pos_map_layer > num_elements)
 			return false;
 
-		if(position == num_elements)
+		if(pos_map_layer == num_elements)
 		{
 			PushBack(element);
 			return true;
@@ -101,29 +101,29 @@ public:
 		if(num_elements + 1 > mem_capacity)
 			Alloc(mem_capacity + DYN_ARRAY_BLOCK_SIZE);
 
-		for(unsigned int i = num_elements; i > position; --i)
+		for(unsigned int i = num_elements; i > pos_map_layer; --i)
 		{
 			data[i] = data[i - 1];
 		}
 
-		data[position] = element;
+		data[pos_map_layer] = element;
 		++num_elements;
 
 		return true;
 	}
 
-	bool Insert(const p2DynArray<VALUE>& array, unsigned int position)
+	bool Insert(const p2DynArray<VALUE>& array, unsigned int pos_map_layer)
 	{
-		if(position > num_elements)
+		if(pos_map_layer > num_elements)
 			return false;
 
 		if(num_elements + array.num_elements > mem_capacity)
 			Alloc(num_elements + array.num_elements + 1);
 
-		for(unsigned int i = position; i < position + array.num_elements; ++i)
+		for(unsigned int i = pos_map_layer; i < pos_map_layer + array.num_elements; ++i)
 		{
 			data[i + array.num_elements] = data[i];
-			data[i] = array[i - position];
+			data[i] = array[i - pos_map_layer];
 			++num_elements;
 		}
 

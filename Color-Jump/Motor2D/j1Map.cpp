@@ -1,4 +1,5 @@
 #include "p2Defs.h"
+#include "j1Window.h"
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
@@ -30,50 +31,64 @@ void j1Map::Draw()
 {
 	if (map_loaded == false)
 		return;
-	p2List_item<MapLayer*>* layer;
 
-	// TODO 4: Make sure we draw all the layers and not just the first one
-	MapLayer* layer = this->data.layers.start->data;
-
-	for (int y = 0; y < data.height; ++y)
+	//Draw all image layers
+	p2List_item<MapLayer*>* image = nullptr;
+	for (image = data.layers.start; image; image = image->next)
 	{
-		for (int x = 0; x < data.width; ++x)
+		SDL_Texture* texture = image->data->texture;
+		SDL_Rect section = { 0, 0, image->data->width, image->data->height };
+		if (image->data->pos_map_layer.x < -image->data->width)
 		{
-			int tile_id = layer->Get(x, y);
-			if (tile_id > 0)
+			image->data->pos_map_layer.x = image->data->width;
+		}
+		App->render->Blit(texture, image->data->pos_map_layer.x, image->data->pos_map_layer.y, &section);
+	}
+
+	p2List_item<MapLayer*>* item = nullptr;
+	MapLayer* layer = nullptr;
+	uint tile_id;
+	uint w, h;
+	App->win->GetWindowSize(w, h);
+	int scale = App->win->GetScale();
+	int camera_pos = -App->render->virtual_camera_pos;
+	w = WorldToMap(w, h).x / scale;
+	h = WorldToMap(w, h).y / scale;
+	camera_pos = WorldToMap(camera_pos, 0).x / scale;
+	p2List_item<TileSet*>* tileSet = nullptr;
+	for (item = data.layers.start; item; item = item->next)
+	{
+		layer = item->data;
+
+		//Each layer
+		for (int j = 0; j < h; j++)
+		{
+			for (int i = camera_pos; i < camera_pos + w + 1; i++)
 			{
-				TileSet* tileset = GetTilesetFromTileId(tile_id);
-				if (tileset != nullptr)
+				tile_id = layer->tiles[layer->Get(i, j)];
+				if (tile_id != 0)
 				{
-					SDL_Rect r = tileset->GetTileRect(tile_id);
-					iPoint pos = MapToWorld(x, y);
-
-				/*	if (layer->data->name == "middle") {
-
-						if (pos.x <(-(App->render->camera.x) + App->render->camera.w) && pos.x >(-(App->render->camera.x) - 550)) {
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, map_file.child("map").child("layer").next_sibling("layer").child("properties").child("property").attribute("value").as_float());
-						}
-					}
-					else if (layer->data->name == "front") {
-						if (pos.x <(-(App->render->camera.x) + App->render->camera.w) && pos.x >(-(App->render->camera.x) - 1085))
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, map_file.child("map").child("layer").next_sibling("layer").next_sibling("layer").next_sibling("layer").child("properties").child("property").attribute("value").as_float());
-					}
-					else {
-						if (pos.x <(-(App->render->camera.x) + App->render->camera.w) && pos.x >(-(App->render->camera.x) - 170)) {
-
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE);
+					for (tileSet = data.tilesets.start; tileSet; tileSet = tileSet->next)
+					{
+						if (tile_id >= tileSet->data->firstgid && ((!tileSet->next) || (tileSet->next && tile_id < tileSet->next->data->firstgid)))
+						{
+							break;
 						}
 					}
 
-
+					SDL_Texture* texture = tileSet->data->texture;
+					iPoint position = MapToWorld(i, j);
+					SDL_Rect* section = &tileSet->data->GetTileRect(tile_id);
+					App->render->Blit(texture, position.x, position.y, section);
 				}
 			}
-			tile_num++;
 		}
 	}
 }
 
-}*/
+
+
+
 
 		
 TileSet* j1Map::GetTilesetFromTileId(int id) const

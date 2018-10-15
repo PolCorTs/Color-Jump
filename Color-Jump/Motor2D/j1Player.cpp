@@ -91,7 +91,7 @@
 //	dead = false;
 //
 //	//Add a collider to the player
-//	collider = App->collision->AddCollider({ position.x + 4, position.y + 1, 22, 14 }, COLLIDER_PLAYER, this);
+//	collider = App->collision->AddCollider({ pos_map_layer.x + 4, pos_map_layer.y + 1, 22, 14 }, COLLIDER_PLAYER, this);
 //
 //	powerup[BASIC_SHOOT] = true;
 //	powerup[BOMB_SHOOT] = false;
@@ -106,8 +106,8 @@
 //
 //bool j1Player::CleanUp()
 //{
-//	position.x = 100;
-//	position.y = 130;
+//	pos_map_layer.x = 100;
+//	pos_map_layer.y = 130;
 //
 //	LOG("Unloading Player assets");
 //	App->textures->Unload(graphics);
@@ -127,7 +127,7 @@
 //{
 //	if (nitroanim) {
 //		if (counter < 5) {
-//			App->render->Blit(graphics, position.x - 40, position.y, &(nitro.GetCurrentFrame()));
+//			App->render->Blit(graphics, pos_map_layer.x - 40, pos_map_layer.y, &(nitro.GetCurrentFrame()));
 //			counter += 1;
 //		}
 //		else {
@@ -138,7 +138,7 @@
 //	}
 //
 //	if (App->input->keyboard[SDL_SCANCODE_F6]) {
-//		position.x = 4600;
+//		pos_map_layer.x = 4600;
 //		App->render->camera.x = 4600;
 //	}
 //	if (App->input->keyboard[SDL_SCANCODE_F5] == KEY_DOWN)
@@ -150,23 +150,23 @@
 //
 //	if (enable_movement) {
 //
-//		if ((App->input->keyboard[SDL_SCANCODE_D] == KEY_STATE::KEY_REPEAT || App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT) && position.x < App->render->camera.x / SCREEN_SIZE + SCREEN_WIDTH - 40)
+//		if ((App->input->keyboard[SDL_SCANCODE_D] == KEY_STATE::KEY_REPEAT || App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT) && pos_map_layer.x < App->render->camera.x / SCREEN_SIZE + SCREEN_WIDTH - 40)
 //		{
-//			position.x += speed;
+//			pos_map_layer.x += speed;
 //		}
-//		if ((App->input->keyboard[SDL_SCANCODE_A] == KEY_STATE::KEY_REPEAT || App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT) && position.x > App->render->camera.x / SCREEN_SIZE)
+//		if ((App->input->keyboard[SDL_SCANCODE_A] == KEY_STATE::KEY_REPEAT || App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT) && pos_map_layer.x > App->render->camera.x / SCREEN_SIZE)
 //		{
-//			position.x -= speed;
+//			pos_map_layer.x -= speed;
 //		}
-//		if ((App->input->keyboard[SDL_SCANCODE_W] == KEY_STATE::KEY_DOWN || App->input->controller[UP] == KEY_STATE::KEY_DOWN) && position.y > App->render->camera.y / SCREEN_SIZE)
+//		if ((App->input->keyboard[SDL_SCANCODE_W] == KEY_STATE::KEY_DOWN || App->input->controller[UP] == KEY_STATE::KEY_DOWN) && pos_map_layer.y > App->render->camera.y / SCREEN_SIZE)
 //		{
-//			position.y -= speed;
+//			pos_map_layer.y -= speed;
 //			current_animation = &upward;
 //			current_animation->Reset();
 //		}
-//		if ((App->input->keyboard[SDL_SCANCODE_W] == KEY_STATE::KEY_REPEAT || App->input->controller[UP] == KEY_STATE::KEY_REPEAT) && position.y > App->render->camera.y / SCREEN_SIZE)
+//		if ((App->input->keyboard[SDL_SCANCODE_W] == KEY_STATE::KEY_REPEAT || App->input->controller[UP] == KEY_STATE::KEY_REPEAT) && pos_map_layer.y > App->render->camera.y / SCREEN_SIZE)
 //		{
-//			position.y -= speed;
+//			pos_map_layer.y -= speed;
 //			current_animation = &upward;
 //
 //		}
@@ -175,16 +175,16 @@
 //				current_animation = &upwardreturn;
 //			}
 //		}
-//		if ((App->input->keyboard[SDL_SCANCODE_S] == KEY_STATE::KEY_DOWN || App->input->controller[DOWN] == KEY_STATE::KEY_DOWN) && position.y < App->render->camera.y / SCREEN_SIZE + SCREEN_HEIGHT - 50)
+//		if ((App->input->keyboard[SDL_SCANCODE_S] == KEY_STATE::KEY_DOWN || App->input->controller[DOWN] == KEY_STATE::KEY_DOWN) && pos_map_layer.y < App->render->camera.y / SCREEN_SIZE + SCREEN_HEIGHT - 50)
 //		{
-//			position.y += speed * 1.5f;
+//			pos_map_layer.y += speed * 1.5f;
 //			current_animation = &downward;
 //			current_animation->Reset();
 //
 //		}
-//		if ((App->input->keyboard[SDL_SCANCODE_S] == KEY_STATE::KEY_REPEAT || App->input->controller[DOWN] == KEY_STATE::KEY_REPEAT) && position.y < App->render->camera.y / SCREEN_SIZE + SCREEN_HEIGHT - 50)
+//		if ((App->input->keyboard[SDL_SCANCODE_S] == KEY_STATE::KEY_REPEAT || App->input->controller[DOWN] == KEY_STATE::KEY_REPEAT) && pos_map_layer.y < App->render->camera.y / SCREEN_SIZE + SCREEN_HEIGHT - 50)
 //		{
-//			position.y += speed * 1.5f;
+//			pos_map_layer.y += speed * 1.5f;
 //			current_animation = &downward;
 //		}
 //		if (App->input->keyboard[SDL_SCANCODE_S] == KEY_STATE::KEY_UP || App->input->controller[DOWN] == KEY_STATE::KEY_UP) {
@@ -194,8 +194,8 @@
 //			}
 //		}
 //		if (App->input->keyboard[SDL_SCANCODE_F2] == KEY_DOWN) {
-//			position.x = 4700;
-//			position.y = 100;
+//			pos_map_layer.x = 4700;
+//			pos_map_layer.y = 100;
 //			App->scene_stage1->disableModules();
 //		}
 //
@@ -208,23 +208,23 @@
 //		if (App->input->keyboard[SDL_SCANCODE_SPACE] == KEY_STATE::KEY_DOWN || App->input->controller[BUTTON_A] == KEY_STATE::KEY_DOWN) {
 //
 //			if (powerup[BASIC_SHOOT] == true) {
-//				App->particles->AddParticle(App->particles->basic_shoot, position.x + 40, position.y, COLLIDER_PLAYER_SHOT);
+//				App->particles->AddParticle(App->particles->basic_shoot, pos_map_layer.x + 40, pos_map_layer.y, COLLIDER_PLAYER_SHOT);
 //				App->tentacles->ShootLaser();
 //				App->audio->PlaySound(App->particles->basic_shoot.fx);
 //			}
 //			if (powerup[MISSILE_SHOOT] == true) {
 //				if (App->particles->active_missiles == 0) {
 //					App->particles->active_missiles = 4;
-//					App->particles->AddParticle(App->particles->missile, position.x + 10, position.y - 20, COLLIDER_PLAYER_SHOT);
-//					App->particles->AddParticle(App->particles->missile, position.x, position.y - 10, COLLIDER_PLAYER_SHOT);
-//					App->particles->AddParticle(App->particles->missile, position.x, position.y + 10, COLLIDER_PLAYER_SHOT);
-//					App->particles->AddParticle(App->particles->missile, position.x + 10, position.y + 20, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->missile, pos_map_layer.x + 10, pos_map_layer.y - 20, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->missile, pos_map_layer.x, pos_map_layer.y - 10, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->missile, pos_map_layer.x, pos_map_layer.y + 10, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->missile, pos_map_layer.x + 10, pos_map_layer.y + 20, COLLIDER_PLAYER_SHOT);
 //				}
 //			}
 //
 //			if (SDL_GetTicks() - start_time >= 1000) {
 //				if (powerup[BOMB_SHOOT] == true) {
-//					App->particles->AddParticle(App->particles->bomb, position.x + 20, position.y, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->bomb, pos_map_layer.x + 20, pos_map_layer.y, COLLIDER_PLAYER_SHOT);
 //				}
 //			}
 //			start_time = SDL_GetTicks();
@@ -235,7 +235,7 @@
 //				if (SDL_GetTicks() - start_time >= 500) {
 //					start_time = SDL_GetTicks();
 //					App->tentacles->ShootLaser();
-//					App->particles->AddParticle(App->particles->basic_shoot, position.x + 40, position.y, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->basic_shoot, pos_map_layer.x + 40, pos_map_layer.y, COLLIDER_PLAYER_SHOT);
 //					App->audio->PlaySound(App->particles->basic_shoot.fx);
 //				}
 //			}
@@ -243,7 +243,7 @@
 //			if (powerup[BOMB_SHOOT] == true) {
 //				if (SDL_GetTicks() - aux_time >= 1000) {
 //					aux_time = SDL_GetTicks();
-//					App->particles->AddParticle(App->particles->bomb, position.x + 20, position.y, COLLIDER_PLAYER_SHOT);
+//					App->particles->AddParticle(App->particles->bomb, pos_map_layer.x + 20, pos_map_layer.y, COLLIDER_PLAYER_SHOT);
 //				}
 //			}
 //		}
@@ -257,19 +257,19 @@
 //
 //	}
 //	//Collider nau
-//	collider->SetPos(position.x + 10, position.y + 3);
+//	collider->SetPos(pos_map_layer.x + 10, pos_map_layer.y + 3);
 //
 //
 //	// Draw everything --------------------------------------
 //	if (!dead) {
 //		if (App->tentacles->blit_tentacle)
 //			App->tentacles->BlitTentacles();
-//		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame());
+//		App->render->Blit(graphics, pos_map_layer.x, pos_map_layer.y, &current_animation->GetCurrentFrame());
 //	}
 //	if (godmode == true)
 //		App->font->BlitText(0, 0, App->player->font_score, _godmode);
 //
-//	collider->SetPos(position.x + 4, position.y + 1);//SET POS PLAYER_COLLIDER
+//	collider->SetPos(pos_map_layer.x + 4, pos_map_layer.y + 1);//SET POS PLAYER_COLLIDER
 //
 //	if (dead) {
 //		if (life < 1) {
@@ -301,7 +301,7 @@
 //
 //	if (!dead && godmode == false && collider2->type != COLLIDER_POWERUP) {
 //
-//		App->particles->AddParticle(App->particles->explosion_player, position.x, position.y - 24, COLLIDER_NONE);
+//		App->particles->AddParticle(App->particles->explosion_player, pos_map_layer.x, pos_map_layer.y - 24, COLLIDER_NONE);
 //		App->audio->PlaySound(death_fx);
 //		dead = true;
 //		App->scene_stage1->right = false;
