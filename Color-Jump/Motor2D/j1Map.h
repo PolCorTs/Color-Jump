@@ -119,6 +119,10 @@ private:
 public:
 
 	MapData data;
+	MapLayer* layer;
+	
+
+	bool debug = false;
 
 private:
 

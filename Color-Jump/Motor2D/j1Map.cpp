@@ -32,58 +32,129 @@ void j1Map::Draw()
 	if (map_loaded == false)
 		return;
 
-	//Draw all image layers
-	p2List_item<MapLayer*>* image = nullptr;
-	for (image = data.layers.start; image; image = image->next)
-	{
-		SDL_Texture* texture = image->data->texture;
-		SDL_Rect section = { 0, 0, image->data->width, image->data->height };
-		if (image->data->pos_map_layer.x < -image->data->width)
-		{
-			image->data->pos_map_layer.x = image->data->width;
-		}
-		App->render->Blit(texture, image->data->pos_map_layer.x, image->data->pos_map_layer.y, &section);
-	}
+	//SDL_Rect camera = App->render->camera;
+	//for (uint lay = 0; lay < data.layers.count(); lay++)
+	//{
+	//	if (data.layers[lay]->name != "Meta")
+	//	{
+	//		for (uint set = 0; set < data.tilesets.count(); set++)
+	//		{
+	//			for (int y = 0; y < data.height; y++)
+	//			{
+	//				for (int x = 0; x < data.width; x++)
+	//				{
+	//					int tile_id = data.layers[lay]->Get(x, y);
 
-	p2List_item<MapLayer*>* item = nullptr;
-	MapLayer* layer = nullptr;
-	uint tile_id;
-	uint w, h;
-	App->win->GetWindowSize(w, h);
-	int scale = App->win->GetScale();
-	int camera_pos = -App->render->virtual_camera_pos;
-	w = WorldToMap(w, h).x / scale;
-	h = WorldToMap(w, h).y / scale;
-	camera_pos = WorldToMap(camera_pos, 0).x / scale;
-	p2List_item<TileSet*>* tileSet = nullptr;
-	for (item = data.layers.start; item; item = item->next)
+	//					if (tile_id > 0)
+	//					{
+	//						TileSet* tileset = GetTilesetFromTileId(tile_id);
+	//						SDL_Rect r = tileset->GetTileRect(tile_id);
+	//						iPoint pos = MapToWorld(x, y);
+	//						if (data.layers[lay]->parallaxSpeed == 1)
+	//						{
+	//							if (pos.x >= camera.x - 32 && pos.x <= camera.x + camera.w &&
+	//								pos.y >= camera.y - 32 && pos.y <= camera.y + camera.h)
+	//							{
+	//								App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, -data.layers[lay]->parallaxSpeed);
+	//							}
+	//						}
+	//						else 
+	//						{
+	//							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, -data.layers[lay]->parallaxSpeed);
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
+	p2List_item<MapLayer*>* item = data.layers.start;
+
+	for (; item != NULL; item = item->next)
 	{
 		layer = item->data;
 
-		//Each layer
-		for (int j = 0; j < h; j++)
+		if (layer->name != "Meta")
 		{
-			for (int i = camera_pos; i < camera_pos + w + 1; i++)
+			for (int y = 0; y < data.height; ++y)
 			{
-				tile_id = layer->tiles[layer->Get(i, j)];
-				if (tile_id != 0)
+				for (int x = 0; x < data.width; ++x)
 				{
-					for (tileSet = data.tilesets.start; tileSet; tileSet = tileSet->next)
+					int tile_id = layer->Get(x, y);
+					if (tile_id > 0)
 					{
-						if (tile_id >= tileSet->data->firstgid && ((!tileSet->next) || (tileSet->next && tile_id < tileSet->next->data->firstgid)))
+						TileSet* tileset = GetTilesetFromTileId(tile_id);
+
+						SDL_Rect r = tileset->GetTileRect(tile_id);
+						iPoint pos = MapToWorld(x, y);
+
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE);
+					}
+				}
+			}
+		}
+		else
+		{
+			if (debug == true)
+			{
+				for (int y = 0; y < data.height; ++y)
+				{
+					for (int x = 0; x < data.width; ++x)
+					{
+						int tile_id = layer->Get(x, y);
+						if (tile_id > 0)
 						{
-							break;
+							TileSet* tileset = GetTilesetFromTileId(tile_id);
+
+							SDL_Rect r = tileset->GetTileRect(tile_id);
+							iPoint pos = MapToWorld(x, y);
+
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE);
 						}
 					}
-
-					SDL_Texture* texture = tileSet->data->texture;
-					iPoint position = MapToWorld(i, j);
-					SDL_Rect* section = &tileSet->data->GetTileRect(tile_id);
-					App->render->Blit(texture, position.x, position.y, section);
 				}
 			}
 		}
 	}
+	//if (debug == true)
+	//{
+	//	SDL_Rect collisions;
+	//	for (p2List_item<ObjectsGroup*>* object = App->map->data.objLayers.start; object; object = object->next)
+	//	{
+	//		if (object->data->name == ("Collision"))
+	//		{
+	//			for (p2List_item<ObjectsData*>* objectdata = object->data->objects.start; objectdata; objectdata = objectdata->next)
+	//			{
+	//				if (objectdata->data->name == "Grid")
+	//				{
+	//					collisions.h = objectdata->data->height, collisions.w = objectdata->data->width, collisions.x = objectdata->data->x, collisions.y = objectdata->data->y;
+	//					App->render->DrawQuad(collisions, 0, 0, 255, 50); //blue
+	//				}
+	//				else if (objectdata->data->name == "Floor")
+	//				{
+	//					collisions.h = objectdata->data->height, collisions.w = objectdata->data->width, collisions.x = objectdata->data->x, collisions.y = objectdata->data->y;
+	//					App->render->DrawQuad(collisions, 0, 255, 0, 50); //green
+	//				}
+	//				else if (objectdata->data->name == "Spikes")
+	//				{
+	//					collisions.h = objectdata->data->height, collisions.w = objectdata->data->width, collisions.x = objectdata->data->x, collisions.y = objectdata->data->y;
+	//					App->render->DrawQuad(collisions, 255, 0, 0, 50); //red
+	//				}
+	//				else if (objectdata->data->name == "Ceiling")
+	//				{
+	//					collisions.h = objectdata->data->height, collisions.w = objectdata->data->width, collisions.x = objectdata->data->x, collisions.y = objectdata->data->y;
+	//					App->render->DrawQuad(collisions, 0, 0, 0, 50); //black
+	//				}
+	//				else if (objectdata->data->name == "Wall")
+	//				{
+	//					collisions.h = objectdata->data->height, collisions.w = objectdata->data->width, collisions.x = objectdata->data->x, collisions.y = objectdata->data->y;
+	//					App->render->DrawQuad(collisions, 255, 255, 0, 50); //yellow
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 
