@@ -32,42 +32,69 @@ void j1Map::Draw()
 	if (map_loaded == false)
 		return;
 
-	//SDL_Rect camera = App->render->camera;
-	//for (uint lay = 0; lay < data.layers.count(); lay++)
-	//{
-	//	if (data.layers[lay]->name != "Meta")
-	//	{
-	//		for (uint set = 0; set < data.tilesets.count(); set++)
-	//		{
-	//			for (int y = 0; y < data.height; y++)
-	//			{
-	//				for (int x = 0; x < data.width; x++)
-	//				{
-	//					int tile_id = data.layers[lay]->Get(x, y);
+	p2List_item<MapLayer*>* item = data.layers.start;
 
-	//					if (tile_id > 0)
-	//					{
-	//						TileSet* tileset = GetTilesetFromTileId(tile_id);
-	//						SDL_Rect r = tileset->GetTileRect(tile_id);
-	//						iPoint pos = MapToWorld(x, y);
-	//						if (data.layers[lay]->parallaxSpeed == 1)
-	//						{
-	//							if (pos.x >= camera.x - 32 && pos.x <= camera.x + camera.w &&
-	//								pos.y >= camera.y - 32 && pos.y <= camera.y + camera.h)
-	//							{
-	//								App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, -data.layers[lay]->parallaxSpeed);
-	//							}
-	//						}
-	//						else 
-	//						{
-	//							App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, -data.layers[lay]->parallaxSpeed);
-	//						}
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+	for (; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		//if(layer->properties.Get("Nodraw") != 0)
+		//continue;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+
+					SDL_Rect r = tileset->GetTileRect(tile_id);
+					iPoint pos = MapToWorld(x, y);
+
+					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+				}
+			}
+		}
+	}
+	/*if (map_loaded == false)
+		return;
+
+	SDL_Rect camera = App->render->camera;
+	for (uint lay = 0; lay < data.layers.count(); lay++)
+	{
+		if (data.layers[lay]->name != "Meta")
+		{
+			for (uint set = 0; set < data.tilesets.count(); set++)
+			{
+				for (int y = 0; y < data.height; y++)
+				{
+					for (int x = 0; x < data.width; x++)
+					{
+						int tile_id = data.layers[lay]->Get(x, y);
+
+						if (tile_id > 0)
+						{
+							TileSet* tileset = GetTilesetFromTileId(tile_id);
+							SDL_Rect r = tileset->GetTileRect(tile_id);
+							iPoint pos = MapToWorld(x, y);
+							
+								if (pos.x >= camera.x - 32 && pos.x <= camera.x + camera.w &&
+									pos.y >= camera.y - 32 && pos.y <= camera.y + camera.h)
+								{
+									App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE);
+								}
+							else 
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	p2List_item<MapLayer*>* item = data.layers.start;
 
@@ -116,7 +143,7 @@ void j1Map::Draw()
 				}
 			}
 		}
-	}
+	}*/
 	//if (debug == true)
 	//{
 	//	SDL_Rect collisions;
@@ -164,11 +191,21 @@ void j1Map::Draw()
 		
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
-	// TODO 3: Complete this method so we pick the right
-	// Tileset based on a tile id
+	p2List_item<TileSet*>* item = data.tilesets.start;
+	TileSet* set = item->data;
 
+	while (item)
+	{
+		if (id < item->data->firstgid)
+		{
+			set = item->prev->data;
+			break;
+		}
+		set = item->data;
+		item = item->next;
+	}
 
-	return data.tilesets.start->data;
+	return set;
 }
 
 iPoint j1Map::MapToWorld(int x, int y) const
