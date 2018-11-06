@@ -65,7 +65,7 @@ public:
 	bool GetWindowEvent(int code);
 
 	// Get mouse / axis pos_map_layer
-	void GetMousepos_map_layer(int &x, int &y);
+	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
 private:

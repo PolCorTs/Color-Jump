@@ -6,14 +6,33 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-// TODO 5: Create a generic structure to hold properties
-// TODO 7: Our custom properties should have one method
-// to ask for the value of a custom property
-// ----------------------------------------------------
 struct Properties
 {
+	struct Property
+	{
+		p2SString name;
+		int value;
+	};
 
+	~Properties()
+	{
+		p2List_item<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+
+		list.clear();
+	}
+
+	int Get(const char* name, int default_value = 0) const;
+
+	p2List<Property*>	list;
 };
+
 // ----------------------------------------------------
 struct MapLayer
 {
@@ -21,9 +40,7 @@ struct MapLayer
 	int			width;
 	int			height;
 	uint*		data;
-	Properties properties;
-	SDL_Texture* texture = nullptr;
-	fPoint pos_map_layer;
+	Properties	properties;
 
 	MapLayer() : data(NULL)
 	{}
@@ -33,7 +50,6 @@ struct MapLayer
 		RELEASE(data);
 	}
 
-	//Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
 		return data[(y*width) + x];
@@ -102,9 +118,9 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
-	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 private:
 
@@ -119,10 +135,6 @@ private:
 public:
 
 	MapData data;
-	MapLayer* layer;
-	
-
-	bool debug = false;
 
 private:
 
